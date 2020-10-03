@@ -1,15 +1,17 @@
 <template>
 <div>
-    <div class="container">
-        <div class="Income-list result-block">
+    <div class="row">
+        <div class="Income-list col" v-if="check">
+            <h2>Incomes</h2>
           <ul >
-              <li class="Inter-income-list >" v-for="(Income, index) in Incomes" 
-                  :key='index'><p class="p-description">{{Income.description}}
+              <li class="Inter-income-list >" v-for="(Income, index) in Incomes " 
+                  :key='index'><p class="p-description" >{{Income.description}}
                       </p><p class="p-amount">{{Income.amount}} <b-icon-x-circle-fill v-on:click="removeItemFromIncomeList(index)" >
                           </b-icon-x-circle-fill></p></li>    
           </ul>
         </div>
-        <div class="Expenses-list result-block">
+        <div class="Expenses-list col" v-if="check">
+            <h2>Expenses</h2>
             <ul>
               <li class="Inter-expense-list >" v-for="(Expense, index) in Expenses" 
                   :key='index'><p class="p-description">{{Expense.description}}
@@ -17,8 +19,7 @@
           </ul>
         </div>
     </div>
-</div>
-    
+</div>  
 </template>
 <script>
 import {mapActions} from 'vuex';
@@ -31,6 +32,12 @@ export default {
         ]), 
     },
     props:['selected','description','amount'],
+    data(){
+        return{
+            check:false
+        }
+        
+    },
 methods:{
     ...mapActions({
         in:'addIncomeToList',
@@ -39,16 +46,18 @@ methods:{
         remE:'removeExpense'
     }),
         addItemToList(){
-
-            if(this.selected===null||this.description===null||this.amount===null){
+            if((this.selected===null||this.description===null||this.amount===null)||(this.selected===""||this.description===""||this.amount==="")){
                 alert("Fill out all fields");
+                console.log(this.description);
+                console.log(this.Incomes);
             }else{
+                this.check=true;
                 var d=this.description;
                 var a=this.amount;
                 if(this.selected==='inc'){
                     this.in({d,a});
                 }else{  
-                    this.ex({d,a});  
+                    this.ex({d,a});   
                 }
             }   
            },
@@ -62,39 +71,24 @@ methods:{
 }   
 </script>
 <style>
-    .Income-list{
-        position: absolute;
-        left:6%;
-        margin-top:30px;
+.Income-list{
+        margin-top:80px;
     }
     .Expenses-list{
-        position: absolute;
-        left:54%;
-        margin-top:30px;
+        margin-top:80px;
     }
-    .Inter-income-list{
+.Inter-income-list{
         color: white;
         border-radius: 5px;
-        width:70vh;
+        width:90%;
         background: rgba(0, 151, 19, 0.6); 
-        margin:5px;
         list-style-type: none;
     }
     .Inter-expense-list{
         color: white;
         border-radius: 5px;
-        width:70vh;
+        width:90%;
         background: rgba(240, 54, 30, 0.445);
-        margin:5px;
         list-style-type: none;
-    }
-    .p-description{
-        position: absolute;
-        padding-left:5px;
-    }
-    .p-amount{
-    padding-left: 70%;
-    }
-    @media screen and (max-width: 800px){ }     
-      
+    }     
 </style>
