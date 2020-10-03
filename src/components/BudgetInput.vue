@@ -3,12 +3,13 @@
         <b-form-select v-model="selected" :options="options" class="Select-operation"></b-form-select>
         <b-input
             id="inline-form-input-name"
+            ref="des"
             class="mb-2 mr-sm-2 mb-sm-0 Select-operation"
             placeholder="Enter the purpose" v-model="description"
             
         ></b-input>
-        <b-input type="number" class="mb-2 mr-sm-2 mb-sm-0 Select-operation" v-model="amount" ></b-input>
-        <b-icon-check-circle-fill class="btn-input " v-on:click="$refs.c.addItemToList()"></b-icon-check-circle-fill>
+        <b-input type="number" class="mb-2 mr-sm-2 mb-sm-0 Select-operation" v-model="amount" ref="input"></b-input>
+        <b-icon-check-circle-fill class="btn-input " v-on:click="$refs.c.addItemToList(),addItems()"></b-icon-check-circle-fill>
         <BudgetResult 
         ref="c"
         v-bind:selected='selected'
@@ -47,14 +48,11 @@ import BudgetResult from './BudgetResult.vue'
       }
     },
     methods:{
-      addItems: function(type, des, amount){
-        if(type===null||des===null||amount===null){
-          alert("Enter all fields");
-        }else{
-          console.log(type+" "+des+" "+amount);
-          
-        }
-        
+      addItems: function(){
+      //  this.$refs["input"].value = null;
+        this.$refs["des"].focus();
+        this.description=null;
+        this.amount=null;
       },
     }
   }
@@ -78,8 +76,7 @@ import BudgetResult from './BudgetResult.vue'
  }
  @media screen and (max-width: 790px){
       .Select-operation{
-      display: inline;
-      width:200px; 
+      display: inline; 
       
  }  
  .input-options{
